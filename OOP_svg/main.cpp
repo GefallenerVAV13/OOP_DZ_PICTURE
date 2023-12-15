@@ -25,43 +25,46 @@
 
 using namespace std;
 
-struct Circle
+struct Figure
+{
+	string fill;
+};
+
+struct Figure
+{
+	string fill;
+};
+
+struct Circle :Figure
 {
 	double x;
 	double y;
 	double r;
-	string fill;
 	string stroke;
 };
 
-struct Polygon
+struct Polygon :Figure 
 {
-	double x1;
-	double x2;
-	double x3;
-	double x4;
+	unsigned N = 4;
 
-	double y1;
-	double y2;
-	double y3;
-	double y4;
+	double* arr_y{ new double[N] };
+	double* arr_x{ new double[N] };
 
-	string fill;
 };
 
-struct Line
+struct Line: Figure
 {
-	double x1;
+	double x;
+	double y;
+
 	double x2;
-	double y1;
 	double y2;
-	string fill;
 };
 
 ostream& operator<<(std::ostream& out, const Polygon& p)
 {
 
-	return out << "<polygon points =\"" << p.x1 << "," << p.y1 << " " << p.x2 << "," << p.y2<< " " << p.x3 << "," << p.y3 << " " << p.x4 << "," << p.y4 << "\"" << " fill = " << "\"" << p.fill << "\"/>" << '\n';
+	return out << "<polygon points =\"" << p.arr_x[0] << "," << p.arr_y[0] << " " << p.arr_x[1] << "," << p.arr_y[1] << " " << p.arr_x[2] << "," << p.arr_y[2] << " " << p.arr_x[3] << "," << p.arr_y[3] << "\"" << " fill = " << "\"" << p.fill << "\"/>" << '\n';
 }
 
 ostream& operator<<(std::ostream& out, const Circle& c)
@@ -73,7 +76,7 @@ ostream& operator<<(std::ostream& out, const Circle& c)
 ostream& operator<<(std::ostream& out, const Line& l)
 {
 
-	return out << "<line x1=\"" << l.x1 << "\" y1=\"" << l.y1 << "\" x2=\"" << l.x2 << "\" y2 =\"" << l.y2<<"\" stroke=\"" << l.fill << "\"/>" << '\n';
+	return out << "<line x1=\"" << l.x << "\" y1=\"" << l.y << "\" x2=\"" << l.x2 << "\" y2 =\"" << l.y2<<"\" stroke=\"" << l.fill << "\"/>" << '\n';
 	//<line x1 = "40" y1 = "90" x2 = "100" y2 = "100" stroke = "black" / >
 }
 
@@ -130,57 +133,59 @@ int main()
 	c7.fill = "#CCFFCC";
 	c7.stroke = "#CCFFCC";
 
-	Polygon p1; //"0,100 35,100 100,0  80,0" fill = "#B0D224" / >
-	p1.x1 = 0;
-	p1.x2 = 35;
-	p1.x3 = 100;
-	p1.x4 = 80;
-
-	p1.y1 = 100;
-	p1.y2 = 100;
-	p1.y3 = 0;
-	p1.y4 = 0;
-	p1.fill = "#B0D224";
-
-	Polygon p2;
-	p2.x1 = 100;
-	p2.x2 = 80;
-	p2.x3 = 0;
-	p2.x4 = 20;
-
-	p2.y1 = 80;
-	p2.y2 = 100;
-	p2.y3 = 0;
-	p2.y4 = 0;
-	p2.fill = "#0000FF";
-
 	Line l1;
-	l1.x1 = 5;
-	l1.y1 = 0;
+	l1.x = 5;
+	l1.y = 0;
 	l1.x2 = 70;
 	l1.y2 = 10;
 	l1.fill = "#000000";
 
 	Line l2;
-	l2.x1 = 10;
-	l2.y1 = 30;
+	l2.x = 10;
+	l2.y = 30;
 	l2.x2 = 4;
 	l2.y2 = 80;
 	l2.fill = "#000000";
 
 	Line l3;
-	l3.x1 = 90;
-	l3.y1 = 30;
+	l3.x = 90;
+	l3.y = 30;
 	l3.x2 = 4;
 	l3.y2 = 80;
 	l3.fill = "#000000";
 
 	Line l4;
-	l4.x1 = 40;
-	l4.y1 = 90;
+	l4.x = 40;
+	l4.y = 90;
 	l4.x2 = 100;
 	l4.y2 = 100;
 	l4.fill = "#000000";
+	
+
+	Polygon p1; //"0,100 35,100 100,0  80,0" fill = "#B0D224" / >
+
+	p1.arr_x[0] = 0;
+	p1.arr_x[1] = 35;
+	p1.arr_x[2] = 100;
+	p1.arr_x[3] = 80;
+
+	p1.arr_y[0] = 100;
+	p1.arr_y[1] = 100;
+	p1.arr_y[2] = 0;
+	p1.arr_y[3] = 0;
+	p1.fill = "#B0D224";
+
+	Polygon p2;
+	p2.arr_x[0] = 100;
+	p2.arr_x[1] = 80;
+	p2.arr_x[2] = 0;
+	p2.arr_x[3] = 20;
+
+	p2.arr_y[0] = 80;
+	p2.arr_y[1] = 100;
+	p2.arr_y[2] = 0;
+	p2.arr_y[3] = 0;
+	p2.fill = "#0000FF";
 
 	if (svg.is_open()) {
 		svg << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"#F2F0B3\">" << std::endl;
